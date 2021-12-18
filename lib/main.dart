@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'TextBoxes.dart';
+import 'TextBoxesButtons.dart';
 
 void main(){
   runApp(MyApp());
@@ -15,8 +16,10 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text('Travel Diary'),
         ),
-        body: Column(children: [
-            LoginPage()
+        body: Column(
+          children: [
+            LoginPage(),
+            loginButtons()
         ],
         ),
       ),
