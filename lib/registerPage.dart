@@ -15,7 +15,7 @@ class registerPage extends StatelessWidget {
           child: TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              hintText: 'Enter your email address'
+              hintText: 'Enter your Email Address'
             ),
           ),
         ),
@@ -25,10 +25,30 @@ class registerPage extends StatelessWidget {
               obscureText: true,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: 'Enter your password' 
+                hintText: 'Enter your Password' 
                 ),
             ),
-          )
+          ),
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Enter your First Name'
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Enter your Last Name'
+              ),
+            ),
+          ),
+          //BIRTHDAY SELECTOR HERE
+          //https://pub.dev/packages/syncfusion_flutter_datepicker/install
         ],
       ),
     );

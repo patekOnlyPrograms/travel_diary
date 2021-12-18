@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel_diary/mapAndMainScreen.dart';
 import 'registerPage.dart';
 
 class loginButtons extends StatefulWidget {
@@ -18,7 +19,12 @@ class _login_ButtonsState extends State<loginButtons> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ElevatedButton(
-            onPressed: (){}, 
+            onPressed: (){
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => MainScreen())
+              );
+            }, 
             child: const Text('Log in'),
             ),
           ElevatedButton(
