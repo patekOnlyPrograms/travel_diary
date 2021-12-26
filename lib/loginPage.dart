@@ -1,35 +1,5 @@
 import 'package:flutter/material.dart';
 
-// class LoginPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: const <Widget>[
-//         Padding(
-//           padding: EdgeInsets.all(8),
-//           child: TextField(
-            
-//             decoration: InputDecoration(
-//               border: OutlineInputBorder(),
-//               hintText: 'Enter your email address'
-//             ),
-//           ),
-//         ),
-//         Padding(
-//           padding: EdgeInsets.all(8),
-//           child: TextField(
-//             obscureText: true,
-//             decoration: InputDecoration(
-//               border: OutlineInputBorder(),
-//               hintText: 'Enter your password' 
-//               ),
-//           ),
-//         )
-//       ],
-//     );
-//   }
-// }
-
 //rewriting to allow verfication
 //uses keys to keep track of the state and verification
 class LoginPage extends StatefulWidget {
@@ -49,6 +19,11 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
             padding: EdgeInsets.all(10),
             child: TextFormField(
+              // ignore: prefer_const_constructors
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Enter your email address',
+              ),
               validator: (value){
                 if(value == null || value.isEmpty){
                   return 'Please enter some text';
@@ -60,6 +35,11 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
             padding: EdgeInsets.all(10),
             child: TextFormField(
+              // ignore: prefer_const_constructors
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Enter your email address',
+              ),
               validator: (value){
                 if(value == null || value.isEmpty){
                   return 'Please enter some text';
