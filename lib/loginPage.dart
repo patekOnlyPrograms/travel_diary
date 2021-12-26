@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel_diary/mapAndMainScreen.dart';
 
 //rewriting to allow verfication
 //uses keys to keep track of the state and verification
@@ -49,12 +50,13 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 100),
+              padding: const EdgeInsets.symmetric(vertical: 15),
               child: ElevatedButton(
                 onPressed: (){
                   if(_formKey.currentState!.validate() && _formKey.currentState!.validate()){
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Processing'))
+                      Navigator.push(
+                        context, 
+                        MaterialPageRoute(builder: (context) =>  MainScreen())
                     );
                   }
                 }, 
