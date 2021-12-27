@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'mapAndMainScreen.dart';
+
 class registerPage extends StatelessWidget {
   const registerPage({Key? key}) : super(key: key);
 
@@ -32,7 +34,7 @@ class _registerPageForm extends State<registerPageForm> {
         child: Column(
           children: <Widget>[
             Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: EdgeInsets.all(10),
                 child: TextFormField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -47,7 +49,7 @@ class _registerPageForm extends State<registerPageForm> {
                 ),
             ),
             Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: EdgeInsets.all(10),
                 child: TextFormField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -61,6 +63,66 @@ class _registerPageForm extends State<registerPageForm> {
                   },
                 ),
             ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: TextFormField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Please enter your Last Name'
+                ),
+                validator: (value){
+                  if(value == null|| value.isEmpty){
+                    return 'Please enter your Last Name';
+                  }
+                  return null;
+                },
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: TextFormField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Please enter your Email'
+                ),
+                validator: (value){
+                  if(value == null|| value.isEmpty){
+                    return 'Please enter your Email';
+                  }
+                  return null;
+                },
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: TextFormField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Please enter your Password'
+                ),
+                validator: (value){
+                  if(value == null|| value.isEmpty){
+                    return 'Please enter your Password';
+                  }
+                  return null;
+                },
+              ),
+            ),
+            Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: ElevatedButton(
+                  onPressed: (){
+                    if(_registerFormKey.currentState!.validate() &&
+                        _registerFormKey.currentState!.validate()){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MainScreen())
+                      );
+                    }
+                  },
+                  child: Text('Register'),
+                ),
+            )
           ],
         )
     );
