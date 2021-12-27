@@ -1,5 +1,8 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:travel_diary/mapAndMainScreen.dart';
+import 'package:travel_diary/registerPage.dart';
 
 //rewriting to allow verfication
 //uses keys to keep track of the state and verification
@@ -63,6 +66,18 @@ class _LoginPageState extends State<LoginPage> {
                 // ignore: prefer_const_constructors
                 child: Text('Submit'),
               ),
+            ),
+            Padding(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: ElevatedButton(
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => registerPage()
+                      ),
+                    );
+                  },
+                  child: Text('Register'),
+                )
             ),
         ],
       )
