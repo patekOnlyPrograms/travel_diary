@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "879952610943",
+    "project_id": "travel-diary-cafae",
+    "storage_bucket": "travel-diary-cafae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:879952610943:android:f93b945910dc03c85ca14a",
+        "android_client_info": {
+          "package_name": "com.example.travel_diary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "879952610943-50t13e4oq8ooilum6mjdnqais6hvpm25.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBuam3JHoTI3qU4IloynHs-nz5X3IfuFw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "879952610943-50t13e4oq8ooilum6mjdnqais6hvpm25.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
