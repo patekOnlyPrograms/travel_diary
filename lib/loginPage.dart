@@ -12,6 +12,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  //create a boolean for obsureText because stupid TEXTFIELDFORM DOESN'T FUCKING HAVE OBSURE TEXT :(
+  
+  bool obsureFuckingText = true;
   //creating a key to allow validation and is created globably
   final _formKey = GlobalKey<FormState>();
   @override
@@ -42,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
               // ignore: prefer_const_constructors
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: 'Enter your email address',
+                hintText: 'Enter your password',
               ),
               validator: (value){
                 if(value == null || value.isEmpty){
