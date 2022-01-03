@@ -89,6 +89,10 @@ class _registerPageForm extends State<registerPageForm> {
                   if(value == null|| value.isEmpty){
                     return 'Please enter your Email';
                   }
+                  //rewrite the regex
+                  if(!RegExp("^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})").hasMatch(value)){
+                    return 'Please enter a valid email';
+                  }
                   return null;
                 },
               ),
