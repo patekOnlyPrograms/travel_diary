@@ -1,9 +1,10 @@
 name: build_APP
 on:
   workflow_dispatch:
-    
+  push:
+    branches:
+      - master
 
-name: "Build And Release"
 jobs:
   build:
     name: Build & Release
@@ -16,3 +17,6 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: "2.8.x"
+      - run: flutter pub get
+      - run: flutter test
+      - run: flutter build apk --debug --split-per-abi
