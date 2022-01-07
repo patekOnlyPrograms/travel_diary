@@ -1,50 +1,3 @@
-<<<<<<< HEAD
-import 'package:flutter/material.dart';
-
-// class LoginPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: const <Widget>[
-//         Padding(
-//           padding: EdgeInsets.all(8),
-//           child: TextField(
-            
-//             decoration: InputDecoration(
-//               border: OutlineInputBorder(),
-//               hintText: 'Enter your email address'
-//             ),
-//           ),
-//         ),
-//         Padding(
-//           padding: EdgeInsets.all(8),
-//           child: TextField(
-//             obscureText: true,
-//             decoration: InputDecoration(
-//               border: OutlineInputBorder(),
-//               hintText: 'Enter your password' 
-//               ),
-//           ),
-//         )
-//       ],
-//     );
-//   }
-// }
-
-//rewriting to allow verfication
-//uses keys to keep track of the state and verification
-class LoginPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(8),
-            
-          )
-        ],
-    ); 
-=======
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
@@ -132,6 +85,5 @@ class _LoginPageState extends State<LoginPage> {
         ],
       )
     );
->>>>>>> V2.0
   }
 }
