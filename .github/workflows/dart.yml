@@ -1,8 +1,7 @@
 name: build_APP
 on:
-  push:
-    branches:
-    - master
+  workflow_dispatch:
+    
 
 jobs:
   build_appbundle:
