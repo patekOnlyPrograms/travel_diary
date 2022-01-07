@@ -1,8 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'TextBoxes.dart';
-import 'TextBoxesButtons.dart';
+import 'loginPage.dart';
 
 void main(){
   runApp(MyApp());
@@ -19,7 +18,6 @@ class MyApp extends StatelessWidget {
         body: Column(
           children: [
             LoginPage(),
-            loginButtons()
         ],
         ),
       ),
