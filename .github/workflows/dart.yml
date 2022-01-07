@@ -2,7 +2,7 @@ name: build_APP
 on:
   push:
     branches:
-      -master
+    - master
 
 jobs:
   build_appbundle:
