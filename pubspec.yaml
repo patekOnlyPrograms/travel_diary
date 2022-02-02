@@ -31,7 +31,6 @@ dependencies:
     sdk: flutter
   google_maps_flutter: ^2.1.1
   location: ^4.3.0
-  oktoast: ^3.1.5
   permission_handler: ^8.3.0
 
 
