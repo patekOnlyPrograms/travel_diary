@@ -19,5 +19,5 @@ jobs:
           flutter-version: "2.8.x"
       - run: flutter pub get
       #- run: flutter test
-      - run: flutter build apk --debug --split-per-abi ---stacktrace option
+      - run: flutter build apk --build-number
 
