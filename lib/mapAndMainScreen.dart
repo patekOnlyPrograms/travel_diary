@@ -37,6 +37,9 @@ class _MainScreenState extends State<MainScreen> {
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.location_on_sharp),
           onPressed: (){
+            //From here the app should first check is location is enabled if it is not then it should
+            //open up the dialog box to get location then the user can press outside of the box to get location
+            //once location is turned on the floatingActionbutton should change to location tracking
             showDialog(context: context, builder: (context) => AlertDialog(
               title: const Text("Location Requied"),
               content: const Text("Do you want to turn on location for tracking?"),
