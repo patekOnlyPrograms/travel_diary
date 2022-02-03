@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:app_settings/app_settings.dart';
 
 
 class MainScreen extends StatefulWidget {
@@ -9,7 +10,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-
+  //var enabledLoc = await Permission.location.status;
   
   
     late GoogleMapController mapController;
@@ -37,16 +38,19 @@ class _MainScreenState extends State<MainScreen> {
           child: const Icon(Icons.location_on_sharp),
           onPressed: (){
             showDialog(context: context, builder: (context) => AlertDialog(
-              title: Text("Location Requied"),
-              content: Text("Do you want to turn on location for tracking?"),
+              title: const Text("Location Requied"),
+              content: const Text("Do you want to turn on location for tracking?"),
               actions: [
                 TextButton(
                   onPressed: (){}, 
-                  child: Text("Yes")
-                ),
+                  child: const Text("No")),
                 TextButton(
-                  onPressed: (){}, 
-                  child: Text("No"))
+                  onPressed: (){
+                    AppSettings.openLocationSettings();
+                    Navigator.of(context).pop();
+                  }, 
+                  child: const Text("Yes")
+                ),
               ],
             ));
           },
