@@ -30,7 +30,7 @@ class _MainScreenState extends State<MainScreen> {
           onMapCreated: _onMapCreated,
           zoomGesturesEnabled: true,
           rotateGesturesEnabled: true,
-          initialCameraPosition: LatLng
+          initialCameraPosition: CameraPosition(target: LatLng(50.7934166, -1.0904852))
         ),
         floatingActionButton:
             Row(
