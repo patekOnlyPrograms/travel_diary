@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:location/location.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 
 class MainScreen extends StatefulWidget {
@@ -18,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
     void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
     }
-
+    
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +33,18 @@ class _MainScreenState extends State<MainScreen> {
           rotateGesturesEnabled: true,
           initialCameraPosition: CameraPosition(target: LatLng(50.7934166, -1.0904852))
         ),
-        floatingActionButton:
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                FloatingActionButton(
-                  child: const Icon(Icons.location_on_sharp),
-                  onPressed: (){
-                    //From here the app should first check is location is enabled if it is not then it should
-                    //open up the dialog box to get location then the user can press outside of the box to get location
-                    //once location is turned on the floatingActionbutton should change to location tracking
-                    showDialog(context: context, builder: (context) => AlertDialog(
+        floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.location_on_sharp),
+            onPressed: () async {
+              //From here the app should first check is location is enabled if it is not then it should
+              //open up the dialog box to get location then the user can press outside of the box to get location
+              //once location is turned on the floatingActionbutton should change to location tracking
+              var LocationStatus = Permission.location.status;
+              if(LocationStatus.isGranted == true){
+                print("Location worked");
+              }
+              else{
+                showDialog(context: context, builder: (context) => AlertDialog(
                       title: const Text("Location Required"),
                       content: const Text("Do you want to turn on location for tracking?"),
                       actions: [
@@ -57,17 +59,11 @@ class _MainScreenState extends State<MainScreen> {
                             child: const Text("Yes")
                         ),
                       ],
-                    ));
-                  },
-                ),
-                FloatingActionButton(
-                    child: const Icon(Icons.location_searching_sharp),
-                    onPressed: (){
-
-                    }
-                )
-              ],
-            ),
+                  )
+                );
+              }
+            },
+          ),
       ),
     );
   }
