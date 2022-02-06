@@ -36,24 +36,30 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: GoogleMap(
-          mapType: MapType.hybrid,
-          zoomControlsEnabled: false,
-          onMapCreated: _onMapCreated,
-          zoomGesturesEnabled: true,
-          rotateGesturesEnabled: true,
-          initialCameraPosition: CameraPosition(target: LatLng(50.7934166, -1.0904852))
-        ),
-        floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.location_on_sharp),
-            onPressed: (){
-              //From here the app should first check is location is enabled if it is not then it should
-              //open up the dialog box to get location then the user can press outside of the box to get location
-              //once location is turned on the floatingActionbutton should change to location tracking
-              requestPermission(_locationPerm);
-              checkServiceStatus(context, _locationPermStatus as PermissionWithService);
-            },
+        body: Stack(children: <Widget>[
+          GoogleMap(
+            mapType: MapType.hybrid,
+            zoomControlsEnabled: false,
+            onMapCreated: _onMapCreated,
+            zoomGesturesEnabled: true,
+            rotateGesturesEnabled: true,
+            initialCameraPosition: CameraPosition(target: LatLng(50.7934166, -1.0904852))
           ),
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: FloatingActionButton(
+              child: const Icon(Icons.location_on_sharp),
+              onPressed: (){
+                //From here the app should first check is location is enabled if it is not then it should
+                //open up the dialog box to get location then the user can press outside of the box to get location
+                //once location is turned on the floatingActionbutton should change to location tracking
+                requestPermission(_locationPerm);
+                checkServiceStatus(context, _locationPermStatus as PermissionWithService);
+              },
+          ),
+          )
+        ],)
       ),
     );
   }
@@ -64,7 +70,8 @@ class _MainScreenState extends State<MainScreen> {
     // );
     Fluttertoast.showToast(
       msg: (permission.serviceStatus).toString(),
-      gravity: ToastGravity.BOTTOM
+      gravity: ToastGravity.BOTTOM,
+
     );
   }
 
