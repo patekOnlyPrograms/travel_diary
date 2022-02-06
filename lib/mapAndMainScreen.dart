@@ -43,7 +43,7 @@ class _MainScreenState extends State<MainScreen> {
             onMapCreated: _onMapCreated,
             zoomGesturesEnabled: true,
             rotateGesturesEnabled: true,
-            initialCameraPosition: CameraPosition(target: LatLng(50.7934166, -1.0904852))
+            initialCameraPosition: const CameraPosition(target: LatLng(50.7934166, -1.0904852))
           ),
           Positioned(
             bottom: 20,
