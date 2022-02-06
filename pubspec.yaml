@@ -32,8 +32,6 @@ dependencies:
   app_settings: ^4.1.1
   google_maps_flutter: ^2.1.1
   location: ^4.3.0
-  permission_handler: ^8.3.0
-  fluttertoast: ^8.0.8
   
 
 
