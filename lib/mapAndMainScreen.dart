@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 class MainScreen extends StatefulWidget {
@@ -58,8 +59,12 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void checkServiceStatus(BuildContext context,PermissionWithService permission) async{
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text((await permission.serviceStatus).toString()))
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(content: Text((await permission.serviceStatus).toString()))
+    // );
+    Fluttertoast.showToast(
+      msg: (permission.serviceStatus).toString(),
+      gravity: ToastGravity.BOTTOM
     );
   }
 
