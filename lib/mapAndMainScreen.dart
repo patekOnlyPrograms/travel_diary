@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:app_settings/app_settings.dart';
-import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 
@@ -11,15 +9,27 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  //var enabledLoc = await Permission.location.status;
+  final Permission _locationPerm = Permission.location;
+  PermissionStatus _locationPermStatus  = PermissionStatus.denied;
   
   
-    late GoogleMapController mapController;
+  late GoogleMapController mapController;
     
-    void _onMapCreated(GoogleMapController controller) {
+  void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
     }
-    
+  
+  @override
+  void initState(){
+    super.initState();
+
+    _listenForPermissionStatus();
+  }
+
+  void _listenForPermissionStatus() async{
+    final status = await _locationPerm.status;
+    setState(() => _locationPermStatus = status);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,36 +45,31 @@ class _MainScreenState extends State<MainScreen> {
         ),
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.location_on_sharp),
-            onPressed: () async {
+            onPressed: (){
               //From here the app should first check is location is enabled if it is not then it should
               //open up the dialog box to get location then the user can press outside of the box to get location
               //once location is turned on the floatingActionbutton should change to location tracking
-              var LocationStatus = Permission.location.status;
-              if(LocationStatus.isGranted == true){
-                print("Location worked");
-              }
-              else{
-                showDialog(context: context, builder: (context) => AlertDialog(
-                      title: const Text("Location Required"),
-                      content: const Text("Do you want to turn on location for tracking?"),
-                      actions: [
-                        TextButton(
-                            onPressed: (){},
-                            child: const Text("No")),
-                        TextButton(
-                            onPressed: (){
-                              AppSettings.openLocationSettings();
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text("Yes")
-                        ),
-                      ],
-                  )
-                );
-              }
+              requestPermission(_locationPerm);
+              checkServiceStatus(context, _locationPermStatus as PermissionWithService);
             },
           ),
       ),
     );
+  }
+
+  void checkServiceStatus(BuildContext context,PermissionWithService permission) async{
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text((await permission.serviceStatus).toString()))
+    );
+  }
+
+  Future<void> requestPermission(Permission permission) async{
+    final status = await permission.request();
+
+    setState(() {
+      print(status);
+      _locationPermStatus = status;
+      print(_locationPermStatus);
+    });
   }
 }
