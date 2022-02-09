@@ -35,6 +35,14 @@ class _LoginPageState extends State<LoginPage> {
                 if(value == null || value.isEmpty){
                   return 'Please enter some text';
                 }
+                //REGEX PATTERN
+                
+                const pattern = r'[^@\t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+';
+                final regExp = RegExp(pattern);
+
+                if (!regExp.hasMatch(value)){
+                  return 'Please enter a correct email address';
+                }
                 return null;
                 },
               ),
@@ -51,7 +59,6 @@ class _LoginPageState extends State<LoginPage> {
                 if(value == null || value.isEmpty){
                   return 'Please enter some text';
                 }
-                return null;
                 },
               ),
             ),
@@ -70,8 +77,20 @@ class _LoginPageState extends State<LoginPage> {
                 child: Text('Submit'),
               ),
             ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 20),
+            child: ElevatedButton.icon(
+              icon: const ImageIcon(
+                  AssetImage(
+                      "assets/images/google_logo.png"
+                  )
+              ),
+              label: const Text("Sign In with Google"),
+              onPressed: (){},
+            ),
+          ),
             Padding(
-                padding: EdgeInsets.symmetric(vertical: 20),
+                padding: EdgeInsets.symmetric(vertical: 10),
                 child: ElevatedButton(
                   onPressed: (){
                     Navigator.push(context, MaterialPageRoute(
