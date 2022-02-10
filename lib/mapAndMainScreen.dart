@@ -60,29 +60,36 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body:
-        GoogleMap(
-            mapType: MapType.hybrid,
-            zoomControlsEnabled: false,
-            onMapCreated: _onMapCreated,
-            zoomGesturesEnabled: true,
-            rotateGesturesEnabled: true,
-            initialCameraPosition: const CameraPosition(
-              target: LatLng(50.7934166, -1.0904852),
-              zoom: 15
+        body: Padding(
+              padding: const EdgeInsets.only(left: 0,right: 0,top: 0,bottom: 200),
+              child: SafeArea(
+                left: true,
+                right: true,
+                top: true,
+                child: GoogleMap(
+                  mapType: MapType.hybrid,
+                  zoomControlsEnabled: false,
+                  onMapCreated: _onMapCreated,
+                  zoomGesturesEnabled: true,
+                  rotateGesturesEnabled: true,
+                  initialCameraPosition: const CameraPosition(
+                  target: LatLng(50.7934166, -1.0904852),zoom: 15),
+                ),
+              )
             ),
-        ),
-        floatingActionButton: FloatingActionButton.extended(
-          label: const Text("Start Tracking"),
-          icon: const Icon(Icons.location_on_sharp),
-          onPressed: (){
-            _permissionGranted == PermissionStatus.granted
-                ? null
-                : _requestPermissions();
-            _serviceEnabled == true ? null : _requestService();
-          },
-        ),
+            floatingActionButton: FloatingActionButton.extended(
+              label: const Text("Start Tracking"),
+              icon: const Icon(Icons.location_on_sharp),
+              onPressed: (){
+
+                _permissionGranted == PermissionStatus.granted
+                    ? null
+                    : _requestPermissions();
+                _serviceEnabled == true ? null : _requestService();
+                },
+            ),
       ),
     );
   }
