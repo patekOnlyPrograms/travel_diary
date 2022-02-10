@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:travel_diary/mapAndMainScreen.dart';
 import 'package:travel_diary/registerPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 //rewriting to allow verfication
 //uses keys to keep track of the state and verification
@@ -77,7 +78,12 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.symmetric(vertical: 15),
               child: ElevatedButton(
                 onPressed: (){
-                  //this is where login in to firebase function will go
+                  if(_formKey.currentState!.validate() && _formKey.currentState!.validate()){
+                      Navigator.push(
+                        context, 
+                        MaterialPageRoute(builder: (context) =>  MainScreen())
+                    );
+                  }
                 }, 
                 // ignore: prefer_const_constructors
                 child: Text('Submit'),
@@ -111,10 +117,18 @@ class _LoginPageState extends State<LoginPage> {
       )
     );
   }
-}
+  //login function to ask firebase to login
 
-//login function to ask firebase to login
-
-void signIn(String email, String password) async {
-  if(_)
+  void signIn(String email, String password) async {
+    if(_formKey.currentState!.validate()){
+      try{
+              await _auth.signInWithEmailAndPassword(email: email, password: password).then((uid) => {
+          Fluttertoast.showToast(msg: "Login Successful "),
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>MainScreen())),
+        });
+      } on FirebaseAuthException catch (error){
+        Fluttertoast.showToast(msg: error.toString());
+      }
+    }
+  }
 }
