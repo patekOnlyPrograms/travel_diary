@@ -63,7 +63,7 @@ class _MainScreenState extends State<MainScreen> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Padding(
-              padding: const EdgeInsets.only(left: 0,right: 0,top: 0,bottom: 200),
+              padding: const EdgeInsets.only(left: 0,right: 0,top: 0,bottom: 350),
               child: SafeArea(
                 left: true,
                 right: true,
