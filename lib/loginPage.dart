@@ -123,7 +123,10 @@ class _LoginPageState extends State<LoginPage> {
     if(_formKey.currentState!.validate()){
       try{
               await _auth.signInWithEmailAndPassword(email: email, password: password).then((uid) => {
-          Fluttertoast.showToast(msg: "Login Successful "),
+                Fluttertoast.showToast(
+                  msg: "Login Successful ",
+                  toastLength: Toast.LENGTH_LONG,
+            ),
           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>MainScreen())),
         });
       } on FirebaseAuthException catch (error){
