@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: TextFormField(
               // ignore: prefer_const_constructors
               decoration: InputDecoration(
@@ -74,7 +74,9 @@ class _LoginPageState extends State<LoginPage> {
               },
               ),
             ),
-            Padding(
+            Column(
+              children: <Widget>[
+                Padding(
               padding: const EdgeInsets.symmetric(vertical: 15),
               child: ElevatedButton(
                 onPressed: (){
@@ -89,32 +91,34 @@ class _LoginPageState extends State<LoginPage> {
                 child: Text('Submit'),
               ),
             ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            child: ElevatedButton.icon(
-              icon: const ImageIcon(
-                  AssetImage(
-                      "assets/images/google_logo.png"
-                  )
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: ElevatedButton.icon(
+                  icon: const ImageIcon(
+                      AssetImage(
+                          "assets/images/google_logo.png"
+                      )
+                  ),
+                  label: const Text("Sign In with Google"),
+                  onPressed: (){},
+                ),
               ),
-              label: const Text("Sign In with Google"),
-              onPressed: (){},
-            ),
-          ),
-            Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: ElevatedButton(
-                  onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => registerPage()
-                      ),
-                    );
-                  },
-                  child: Text('Register'),
-                )
-            ),
+              Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: ElevatedButton(
+                    onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => registerPage()
+                        ),
+                      );
+                    },
+                    child: Text('Register'),
+                  )
+              ),  
+              ],
+            )
         ],
-      )
+      ),
     );
   }
   //login function to ask firebase to login
