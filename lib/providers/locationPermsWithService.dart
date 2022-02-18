@@ -65,5 +65,15 @@ class _locationPermsState extends State<locationPerms> {
         }
       ),
     );
+
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(onPressed: (){
+      _permissionGranted == PermissionStatus.granted
+                    ? null
+                    : _requestPermissions();
+                _serviceEnabled == true ? null : _requestService();
+    });
   }
 }
