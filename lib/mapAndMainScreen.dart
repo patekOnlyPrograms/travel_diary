@@ -9,12 +9,13 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  
+
   late GoogleMapController mapController;
 
-  late LatLng CurrentLatLong;
+  static final CameraPosition CurrentLatLong = CameraPosition(target:
+  LatLng(0.000000, 0.000000),zoom: 15);
 
-    
+
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
     }
@@ -60,7 +61,6 @@ class _MainScreenState extends State<MainScreen> {
       setState(()  {
         _location = _locationResult;
         _loading = false;
-        CurrentLatLong = LatLng(_locationResult.latitude!, _locationResult.longitude!);
       });
     } on PlatformException catch (err){
       setState(() {
@@ -89,24 +89,23 @@ class _MainScreenState extends State<MainScreen> {
                   onMapCreated: _onMapCreated,
                   zoomGesturesEnabled: true,
                   rotateGesturesEnabled: true,
-                  initialCameraPosition: CameraPosition(
-                  target: CurrentLatLong,zoom: 15),
-                ),
-              )
+                  initialCameraPosition: CurrentLatLong,
+              ),
           ),
-          floatingActionButton: FloatingActionButton.extended(
-            label: const Text("Start Tracking"),
-            icon: const Icon(Icons.location_on_sharp),
-            onPressed: (){
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          label: const Text("Start Tracking"),
+          icon: const Icon(Icons.location_on_sharp),
+          onPressed: (){
 
-              _permissionGranted == PermissionStatus.granted
-                  ? null
-                  : _requestPermissions();
-              _serviceEnabled == true ? null : _requestService();
-              _getUserLocation();
-            },
-          ),
-      ),
+            _permissionGranted == PermissionStatus.granted
+                ? null
+                : _requestPermissions();
+            _serviceEnabled == true ? null : _requestService();
+            _getUserLocation();
+          },
+        ),
+    )
     );
   }
 }
