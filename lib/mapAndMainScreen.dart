@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:flutter/services.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -10,6 +11,9 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   
   late GoogleMapController mapController;
+
+  late LatLng CurrentLatLong;
+
     
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -19,14 +23,10 @@ class _MainScreenState extends State<MainScreen> {
 
   PermissionStatus? _permissionGranted;
   bool? _serviceEnabled;
+  bool _loading = false;
 
-  Future<void> _checkPermissions() async{
-    final PermissionStatus permissionGrantedResult =
-    await locationStuff.hasPermission();
-    setState(() {
-      _permissionGranted = permissionGrantedResult;
-    });
-  }
+  LocationData? _location;
+  String? _error;
 
   Future<void> _requestPermissions() async {
     if (_permissionGranted != PermissionStatus.granted) {
@@ -36,13 +36,6 @@ class _MainScreenState extends State<MainScreen> {
         _permissionGranted = permissionRequestedResult;
       });
     }
-  }
-
-  Future<void> _checkService() async{
-    final bool serviceEnabledResult = await locationStuff.serviceEnabled();
-    setState(() {
-      _serviceEnabled = serviceEnabledResult;
-    });
   }
 
   Future<void> _requestService() async{
@@ -55,6 +48,28 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+
+
+  Future<void> _getUserLocation() async{
+    setState(() {
+      _error = null;
+      _loading = true;
+    });
+    try{
+      final LocationData _locationResult = await locationStuff.getLocation();
+      setState(()  {
+        _location = _locationResult;
+        _loading = false;
+        CurrentLatLong = LatLng(_locationResult.latitude!, _locationResult.longitude!);
+      });
+    } on PlatformException catch (err){
+      setState(() {
+        _error = err.code;
+        _loading = false;
+      });
+    }
+    //return print('Loaction: ' + (_error ?? '${_location ?? "Unkown"}'));
+  }
 
 
   @override
@@ -74,22 +89,23 @@ class _MainScreenState extends State<MainScreen> {
                   onMapCreated: _onMapCreated,
                   zoomGesturesEnabled: true,
                   rotateGesturesEnabled: true,
-                  initialCameraPosition: const CameraPosition(
-                  target: LatLng(50.7934166, -1.0904852),zoom: 15),
+                  initialCameraPosition: CameraPosition(
+                  target: CurrentLatLong,zoom: 15),
                 ),
               )
-            ),
-            floatingActionButton: FloatingActionButton.extended(
-              label: const Text("Start Tracking"),
-              icon: const Icon(Icons.location_on_sharp),
-              onPressed: (){
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            label: const Text("Start Tracking"),
+            icon: const Icon(Icons.location_on_sharp),
+            onPressed: (){
 
-                _permissionGranted == PermissionStatus.granted
-                    ? null
-                    : _requestPermissions();
-                _serviceEnabled == true ? null : _requestService();
-                },
-            ),
+              _permissionGranted == PermissionStatus.granted
+                  ? null
+                  : _requestPermissions();
+              _serviceEnabled == true ? null : _requestService();
+              _getUserLocation();
+            },
+          ),
       ),
     );
   }
