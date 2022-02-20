@@ -16,7 +16,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   //create a boolean for obsureText because stupid TEXTFIELDFORM DOESN'T FUCKING HAVE OBSURE TEXT :(
-  
+
   bool obsureFuckingText = true;
 
   //firebase Cloud
@@ -31,92 +31,85 @@ class _LoginPageState extends State<LoginPage> {
       child: Column(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: TextFormField(
               // ignore: prefer_const_constructors
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
                 hintText: 'Enter your email address',
               ),
-              validator: (value){
-                if(value == null || value.isEmpty){
+              validator: (value) {
+                if (value == null || value.isEmpty) {
                   return 'Please enter some text';
                 }
                 //REGEX PATTERN
-                
+
                 const pattern = r'[^@\t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+';
                 final regExp = RegExp(pattern);
 
-                if (!regExp.hasMatch(value)){
+                if (!regExp.hasMatch(value)) {
                   return 'Please enter a correct email address';
                 }
                 return null;
-                },
-              ),
+              },
             ),
+          ),
           Padding(
             padding: const EdgeInsets.all(10),
             child: TextFormField(
               // ignore: prefer_const_constructors
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
                 hintText: 'Enter your password',
               ),
-              validator: (value){
-                if(value == null || value.isEmpty){
+              validator: (value) {
+                if (value == null || value.isEmpty) {
                   return 'Please enter some text';
                 }
                 RegExp regexPassword = new RegExp(r'^.{6,}$');
-                if(!regexPassword.hasMatch(value)){
+                if (!regexPassword.hasMatch(value)) {
                   return 'Please enter a password that has 6 characers';
                 }
                 return null;
               },
-              ),
             ),
-            Column(
-              children: <Widget>[
-                Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15),
-              child: ElevatedButton(
-                onPressed: (){
-                  if(_formKey.currentState!.validate() && _formKey.currentState!.validate()){
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate() &&
+                        _formKey.currentState!.validate()) {
                       Navigator.push(
-                        context, 
-                        MaterialPageRoute(builder: (context) =>  MainScreen())
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MainScreen()));
+                    }
+                  },
+                  child: const Text('Login')),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const registerPage()),
                     );
-                  }
-                }, 
-                // ignore: prefer_const_constructors
-                child: Text('Submit'),
-              ),
-            ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 20),
-                child: ElevatedButton.icon(
+                  },
+                  child: const Text('Register')),
+              ElevatedButton.icon(
+                  onPressed: () {},
                   icon: const ImageIcon(
-                      AssetImage(
-                          "assets/images/google_logo.png"
-                      )
-                  ),
-                  label: const Text("Sign In with Google"),
-                  onPressed: (){},
-                ),
-              ),
-              Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: ElevatedButton(
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => registerPage()
-                        ),
-                      );
-                    },
-                    child: Text('Register'),
-                  )
-              ),  
-              ],
-            )
+                      AssetImage("assets/images/google_logo.png")),
+                  label: const Text("Sign In With Google")),
+              ElevatedButton(onPressed: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MainScreen()));
+                }, child: Text("Continue without signing in"))
+            ],
+          )
         ],
       ),
     );
@@ -124,16 +117,19 @@ class _LoginPageState extends State<LoginPage> {
   //login function to ask firebase to login
 
   void signIn(String email, String password) async {
-    if(_formKey.currentState!.validate()){
-      try{
-              await _auth.signInWithEmailAndPassword(email: email, password: password).then((uid) => {
-                Fluttertoast.showToast(
-                  msg: "Login Successful ",
-                  toastLength: Toast.LENGTH_LONG,
-            ),
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>MainScreen())),
-        });
-      } on FirebaseAuthException catch (error){
+    if (_formKey.currentState!.validate()) {
+      try {
+        await _auth
+            .signInWithEmailAndPassword(email: email, password: password)
+            .then((uid) => {
+                  Fluttertoast.showToast(
+                    msg: "Login Successful ",
+                    toastLength: Toast.LENGTH_LONG,
+                  ),
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => MainScreen())),
+                });
+      } on FirebaseAuthException catch (error) {
         Fluttertoast.showToast(msg: error.toString());
       }
     }
