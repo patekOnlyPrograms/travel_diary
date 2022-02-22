@@ -10,7 +10,7 @@ class registerPage extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Registration Page'),
+          title: const Text('Registration Page'),
         ),
         body: registerPageForm(),
       ),
@@ -36,7 +36,7 @@ class _registerPageForm extends State<registerPageForm> {
             Padding(
                 padding: EdgeInsets.all(10),
                 child: TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Please enter a Username'
                   ),
@@ -51,7 +51,7 @@ class _registerPageForm extends State<registerPageForm> {
             Padding(
                 padding: EdgeInsets.all(10),
                 child: TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Please enter your First Name'
                   ),
@@ -66,7 +66,7 @@ class _registerPageForm extends State<registerPageForm> {
             Padding(
               padding: EdgeInsets.all(10),
               child: TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Please enter your Last Name'
                 ),
@@ -81,7 +81,7 @@ class _registerPageForm extends State<registerPageForm> {
             Padding(
               padding: EdgeInsets.all(10),
               child: TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Please enter your Email'
                 ),
@@ -100,7 +100,7 @@ class _registerPageForm extends State<registerPageForm> {
             Padding(
               padding: EdgeInsets.all(10),
               child: TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Please enter your Password'
                 ),
@@ -113,7 +113,7 @@ class _registerPageForm extends State<registerPageForm> {
               ),
             ),
             Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: ElevatedButton(
                   onPressed: (){
                     if(_registerFormKey.currentState!.validate() &&
@@ -124,7 +124,7 @@ class _registerPageForm extends State<registerPageForm> {
                       );
                     }
                   },
-                  child: Text('Register'),
+                  child: const Text('Register'),
                 ),
             )
           ],

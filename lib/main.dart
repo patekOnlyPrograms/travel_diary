@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'loginPage.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,7 +15,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Travel Diary'),
+          title: const Text('Travel Diary'),
         ),
         body: Column(
           children: [

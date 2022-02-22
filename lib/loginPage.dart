@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_diary/mapAndMainScreen.dart';
 import 'package:travel_diary/registerPage.dart';
@@ -29,6 +30,7 @@ class _LoginPageState extends State<LoginPage> {
     return Form(
       key: _formKey,
       child: Column(
+        // mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(10),
@@ -66,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                 if (value == null || value.isEmpty) {
                   return 'Please enter some text';
                 }
-                RegExp regexPassword = new RegExp(r'^.{6,}$');
+                RegExp regexPassword = RegExp(r'^.{6,}$');
                 if (!regexPassword.hasMatch(value)) {
                   return 'Please enter a password that has 6 characers';
                 }
@@ -93,7 +95,8 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const registerPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const registerPage()),
                     );
                   },
                   child: const Text('Register')),
@@ -102,12 +105,12 @@ class _LoginPageState extends State<LoginPage> {
                   icon: const ImageIcon(
                       AssetImage("assets/images/google_logo.png")),
                   label: const Text("Sign In With Google")),
-              ElevatedButton(onPressed: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => MainScreen()));
-                }, child: Text("Continue without signing in"))
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MainScreen()));
+                  },
+                  child: const Text("Continue without signing in"))
             ],
           )
         ],

@@ -23,7 +23,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState(){
 
-    marker = Marker(
+    marker = const Marker(
         markerId: MarkerId("Walking Icon"),
         position:  LatLng(0.000000, 0.000000),
         rotation: 0.0,
@@ -31,17 +31,17 @@ class _MainScreenState extends State<MainScreen> {
         anchor: Offset(0.5,0.5),
     );
     blueSurround = Circle(
-        circleId: CircleId("Surround"),
+        circleId: const CircleId("Surround"),
         radius: 0,
         zIndex: 1,
         strokeColor: Colors.blue,
-        center: LatLng(0.000000, 0.000000),
+        center: const LatLng(0.000000, 0.000000),
         fillColor: Colors.blue.withBlue(70)
     );
     super.initState();
   }
 
-  static final CameraPosition CurrentLatLong =
+  static const CameraPosition CurrentLatLong =
   CameraPosition(target: LatLng(0.000000, 0.000000), zoom: 15);
 
   void _onMapCreated(GoogleMapController controller) {
@@ -80,21 +80,13 @@ class _MainScreenState extends State<MainScreen> {
     LatLng latlong = LatLng((newLocationData.latitude)!, (newLocationData.longitude!));
     setState(() {
       marker = Marker(
-        markerId: MarkerId("Walking Icon"),
+        markerId: const MarkerId("Walking Icon"),
         position:  latlong,
         rotation: (newLocationData.heading)!,
         zIndex: 2,
-        anchor: Offset(0.5,0.5),
+        anchor: const Offset(0.5,0.5),
         icon: BitmapDescriptor.fromBytes(imageMarker)
       );
-      // blueSurround = Circle(
-      //   circleId: CircleId("Surround"),
-      //   radius: (newLocationData.accuracy)!,
-      //   zIndex: 1,
-      //   strokeColor: Colors.blue,
-      //   center: latlong,
-      //   fillColor: Colors.blue.withBlue(70)
-      // );
     });
   }
 
@@ -150,7 +142,6 @@ class _MainScreenState extends State<MainScreen> {
                 rotateGesturesEnabled: true,
                 initialCameraPosition: CurrentLatLong,
                 markers: Set.of((marker != null) ? [marker] : []),
-                circles: Set.of((blueSurround != null) ? [blueSurround] : []),
               ),
             ),
           ),
