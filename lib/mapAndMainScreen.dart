@@ -82,7 +82,7 @@ class _MainScreenState extends State<MainScreen> {
       marker = Marker(
         markerId: const MarkerId("Walking Icon"),
         position:  latlong,
-        rotation: (newLocationData.heading)!,
+        rotation: newLocationData.headingAccuracy!,
         zIndex: 2,
         anchor: const Offset(0.5,0.5),
         icon: BitmapDescriptor.fromBytes(imageMarker)
@@ -127,31 +127,23 @@ class _MainScreenState extends State<MainScreen> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          body: Padding(
-            padding:
-                const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 350),
-            child: SafeArea(
-              left: true,
-              right: true,
-              top: true,
-              child: GoogleMap(
-                mapType: MapType.hybrid,
-                zoomControlsEnabled: false,
-                onMapCreated: _onMapCreated,
-                zoomGesturesEnabled: true,
-                rotateGesturesEnabled: true,
-                initialCameraPosition: CurrentLatLong,
-                markers: Set.of((marker != null) ? [marker] : []),
-              ),
-            ),
-          ),
           floatingActionButton: FloatingActionButton.extended(
-            label: const Text("Start Tracking"),
-            icon: const Icon(Icons.location_on_sharp),
-            onPressed: () {
-              _getCurrentUserLocation();
-            }
+              label: const Text("Start Tracking"),
+              icon: const Icon(Icons.location_on_sharp),
+              onPressed: () {
+                _getCurrentUserLocation();
+              }
           ),
-        ));
+          body: GoogleMap(
+            mapType: MapType.hybrid,
+            zoomControlsEnabled: false,
+            onMapCreated: _onMapCreated,
+            zoomGesturesEnabled: true,
+            rotateGesturesEnabled: true,
+            initialCameraPosition: CurrentLatLong,
+            markers: Set.of((marker != null) ? [marker] : []),
+          ),
+          )
+      );
   }
 }
