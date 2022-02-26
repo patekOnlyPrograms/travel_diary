@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:flutter/services.dart';
+
 
 class MainScreen extends StatefulWidget {
   @override
@@ -51,7 +53,7 @@ class _MainScreenState extends State<MainScreen> {
 
   Future<Uint8List> Custommarker() async{
     ByteData imageMarker = await DefaultAssetBundle.of(context).
-    load("assets/images/car_icon.png");
+    load("assets/images/navigation.png");
     return imageMarker.buffer.asUint8List();
   }
 
@@ -127,12 +129,12 @@ class _MainScreenState extends State<MainScreen> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          floatingActionButton: FloatingActionButton.extended(
-              label: const Text("Start Tracking"),
-              icon: const Icon(Icons.location_on_sharp),
+          floatingActionButton: FloatingActionButton(
+              child: const Icon(Icons.location_on_sharp),
+              backgroundColor: Colors.green,
               onPressed: () {
                 _getCurrentUserLocation();
-              }
+              },
           ),
           body: GoogleMap(
             mapType: MapType.hybrid,
@@ -143,7 +145,40 @@ class _MainScreenState extends State<MainScreen> {
             initialCameraPosition: CurrentLatLong,
             markers: Set.of((marker != null) ? [marker] : []),
           ),
-          )
+          bottomNavigationBar: const MainBottomAppBar(),
+        )
       );
   }
 }
+
+class MainBottomAppBar extends StatefulWidget {
+  const MainBottomAppBar({Key? key}) : super(key: key);
+
+  @override
+  _MainBottomAppBarState createState() => _MainBottomAppBarState();
+}
+
+class _MainBottomAppBarState extends State<MainBottomAppBar> {
+  @override
+  Widget build(BuildContext context) {
+    return BottomAppBar(
+      color: Colors.blue,
+      child: IconTheme(
+          data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              IconButton(
+                  onPressed: (){},
+                  icon: const Icon(Icons.location_pin)
+              ),
+              IconButton(onPressed: (){},
+                  icon: const Icon(Icons.list_sharp)
+              )
+            ],
+          )
+      ),
+    );
+  }
+}
+
