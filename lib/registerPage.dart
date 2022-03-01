@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'mapAndMainScreen.dart';
+import 'screens/MainScreen.dart';
 
 class registerPage extends StatelessWidget {
   const registerPage({Key? key}) : super(key: key);
@@ -120,7 +120,7 @@ class _registerPageForm extends State<registerPageForm> {
                         _registerFormKey.currentState!.validate()){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => MainScreen())
+                        MaterialPageRoute(builder: (context) => homeScreenNavigation())
                       );
                     }
                   },

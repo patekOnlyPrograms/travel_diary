@@ -3,9 +3,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:travel_diary/mapAndMainScreen.dart';
+import 'screens/MainScreen.dart';
 import 'package:travel_diary/registerPage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 //rewriting to allow verfication
@@ -87,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MainScreen()));
+                              builder: (context) => homeScreenNavigation()));
                     }
                   },
                   child: const Text('Login')),
@@ -108,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
               ElevatedButton(
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MainScreen()));
+                        MaterialPageRoute(builder: (context) => const homeScreenNavigation()));
                   },
                   child: const Text("Continue without signing in"))
             ],
@@ -130,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                     toastLength: Toast.LENGTH_LONG,
                   ),
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => MainScreen())),
+                      MaterialPageRoute(builder: (context) => homeScreenNavigation())),
                 });
       } on FirebaseAuthException catch (error) {
         Fluttertoast.showToast(msg: error.toString());
