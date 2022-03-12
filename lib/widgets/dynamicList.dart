@@ -7,18 +7,23 @@ class dynamicList extends StatefulWidget {
   _dynamicListState createState() => _dynamicListState();
 }
 
-class _dynamicListState extends State<dynamicList> {
+
+//make a FIFO data structure where we will store all places visited
+//every 30 seconds to 1 minute
+
+class _dynamicListState extends State<dynamicList>
+    with AutomaticKeepAliveClientMixin{
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-        children: <Widget>[
-          Text("location1"),
-          Text("location2"),
-          Text("location2")
-        ],
+    super.build(context);
+    return const Scaffold(
+      body: SafeArea(
+        child: Text("List"),
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

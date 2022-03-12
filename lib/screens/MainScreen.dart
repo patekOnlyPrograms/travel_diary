@@ -45,7 +45,7 @@ class _homeScreenNavigationState extends State<homeScreenNavigation> {
       children: <Widget>[
         googleMapLocation(),
         dynamicList(),
-        settingsPage()
+        SettingsPage()
       ],
     );
   }

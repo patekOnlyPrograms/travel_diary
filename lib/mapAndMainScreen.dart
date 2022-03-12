@@ -9,11 +9,13 @@ import 'package:flutter/services.dart';
 
 
 class googleMapLocation extends StatefulWidget {
+  const googleMapLocation({Key? key}) : super(key: key);
   @override
   _googleMapLocationState createState() => _googleMapLocationState();
 }
 
-class _googleMapLocationState extends State<googleMapLocation> {
+class _googleMapLocationState extends State<googleMapLocation> with
+    AutomaticKeepAliveClientMixin{
   late StreamSubscription _locationSubcriber;
   late GoogleMapController mapController;
   PermissionStatus? _permissionGranted;
@@ -127,6 +129,7 @@ class _googleMapLocationState extends State<googleMapLocation> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
@@ -150,5 +153,8 @@ class _googleMapLocationState extends State<googleMapLocation> {
         ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
