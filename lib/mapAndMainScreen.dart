@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'dart:async';
 import 'dart:typed_data';
 
@@ -14,11 +15,14 @@ class googleMapLocation extends StatefulWidget {
 
 class _googleMapLocationState extends State<googleMapLocation>
     with AutomaticKeepAliveClientMixin {
-  late StreamSubscription _locationSubcriber;
+  StreamSubscription? _locationSubcriber;
   late GoogleMapController mapController;
-  final Location locationStuff = Location();
+  Location locationStuff = Location();
   late Marker marker;
   late Circle blueSurround;
+  List<LocationData> VisitedLocations = [];
+
+  Timer? timeCounter;
 
   @override
   void initState() {
@@ -45,11 +49,8 @@ class _googleMapLocationState extends State<googleMapLocation>
     return imageMarker.buffer.asUint8List();
   }
 
-
-  void updateMarkerAndSurround(
-      LocationData newLocationData, Uint8List imageMarker) {
-    LatLng latlong =
-        LatLng((newLocationData.latitude)!, (newLocationData.longitude!));
+  void updateMarkerAndSurround(LocationData newLocationData, Uint8List imageMarker) {
+    LatLng latlong = LatLng((newLocationData.latitude)!, (newLocationData.longitude!));
     setState(() {
       marker = Marker(
           markerId: const MarkerId("Walking Icon"),
@@ -64,9 +65,6 @@ class _googleMapLocationState extends State<googleMapLocation>
   Future<void> _getCurrentUserLocation() async {
     try {
       Uint8List imageData = await Custommarker();
-      var location = await locationStuff.getLocation();
-      updateMarkerAndSurround(location, imageData);
-
       _locationSubcriber =
           locationStuff.onLocationChanged.listen((newLocaldata) {
         mapController.animateCamera(CameraUpdate.newCameraPosition(
@@ -77,6 +75,10 @@ class _googleMapLocationState extends State<googleMapLocation>
                 tilt: 0,
                 zoom: 18.00)));
         updateMarkerAndSurround(newLocaldata, imageData);
+        timeCounter = Timer.periodic((Duration(seconds: 10)), (timer) {
+          VisitedLocations.add(newLocaldata);
+          print('$newLocaldata');
+        });
       });
     } on PlatformException catch (e) {
       if (e.code == "PERMISSION_DENIED") {
@@ -85,11 +87,18 @@ class _googleMapLocationState extends State<googleMapLocation>
     }
   }
 
+  Future<void> _stopListening() async {
+    setState(() {
+      timeCounter!.cancel();
+      _locationSubcriber?.cancel();
+      _locationSubcriber = null;
+    });
+  }
+
   @override
   void dispose() {
-    if (_locationSubcriber != null) {
-      _locationSubcriber.cancel();
-    }
+    _locationSubcriber?.cancel();
+
     super.dispose();
   }
 
@@ -101,36 +110,35 @@ class _googleMapLocationState extends State<googleMapLocation>
         home: Scaffold(
             body: Stack(
               children: <Widget>[
-                GoogleMap(
-                  mapType: MapType.hybrid,
-                  zoomControlsEnabled: false,
-                  onMapCreated: _onMapCreated,
-                  zoomGesturesEnabled: true,
-                  rotateGesturesEnabled: true,
-                  initialCameraPosition: CurrentLatLong,
-                  markers: Set.of((marker != null) ? [marker] : []),
-                ),
-                Positioned(
-                    right: 70,
-                    top: 650,
-                    child: ElevatedButton(
-                      onPressed: () => _getCurrentUserLocation(),
-                      child: const Text("Start Tracking"),
-                    )
-                ),
-                Positioned(
-                    right: 200,
-                    top: 650,
-                    child: ElevatedButton(
-                      child: const Text("Stop Tracking"),
-                      onPressed: () => dispose(),
-                    )
-                )
+                    GoogleMap(
+                      mapType: MapType.hybrid,
+                      onMapCreated: _onMapCreated,
+                      zoomControlsEnabled: true,
+                      zoomGesturesEnabled: true,
+                      rotateGesturesEnabled: true,
+                      initialCameraPosition: CurrentLatLong,
+                      markers: Set.of((marker != null) ? [marker] : []),
+                    ),
+                    Positioned(
+                        right: 70,
+                        top: 650,
+                        child: ElevatedButton(
+                          onPressed: () => _getCurrentUserLocation(),
+                          child: const Text("Start Tracking"),
+                        )),
+                    Positioned(
+                        right: 200,
+                        top: 650,
+                        child: ElevatedButton(
+                          child: const Text("Stop Tracking"),
+                          onPressed: () => _stopListening(),
+                        ))
               ],
-            )
         )
+      )
     );
   }
+
   @override
   bool get wantKeepAlive => true;
 }
