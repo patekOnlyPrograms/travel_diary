@@ -18,9 +18,6 @@ class _LoginPageState extends State<LoginPage> {
 
   bool obsureFuckingText = true;
 
-  //firebase Cloud
-  final _auth = FirebaseAuth.instance;
-
   //creating a key to allow validation and is created globably
   final _formKey = GlobalKey<FormState>();
   @override

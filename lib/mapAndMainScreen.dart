@@ -18,8 +18,10 @@ class _googleMapLocationState extends State<googleMapLocation>
   StreamSubscription? _locationSubcriber;
   late GoogleMapController mapController;
   Location locationStuff = Location();
+  LocationData? location;
   late Marker marker;
   late Circle blueSurround;
+  String? error;
   List<LocationData> VisitedLocations = [];
 
   Timer? timeCounter;
@@ -36,8 +38,7 @@ class _googleMapLocationState extends State<googleMapLocation>
     super.initState();
   }
 
-  static const CameraPosition CurrentLatLong =
-      CameraPosition(target: LatLng(0.000000, 0.000000), zoom: 15);
+  static const CameraPosition CurrentLatLong = CameraPosition(target: LatLng(0.000000, 0.000000), zoom: 15);
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -62,6 +63,39 @@ class _googleMapLocationState extends State<googleMapLocation>
     });
   }
 
+  Future<void> _listenLocation() async {
+    Uint8List imageData = await Custommarker();
+    _locationSubcriber =
+        locationStuff.onLocationChanged.handleError((dynamic err) {
+          if (err is PlatformException) {
+            setState(() {
+              error = err.code;
+            });
+          }
+          _locationSubcriber?.cancel();
+          setState(() {
+            _locationSubcriber = null;
+          });
+        }).listen((LocationData currentLocation) {
+          setState(() {
+            mapController.animateCamera(CameraUpdate.newCameraPosition(
+              CameraPosition(
+                  bearing: 192.8334901395799,
+                  target:
+                  LatLng((currentLocation.latitude)!, (currentLocation.longitude)!),
+                  tilt: 0,
+                  zoom: 18.00
+              )
+            ));
+            updateMarkerAndSurround(currentLocation, imageData);
+            error = null;
+
+            location = currentLocation;
+          });
+        });
+    setState(() {});
+  }
+
   Future<void> _getCurrentUserLocation() async {
     try {
       Uint8List imageData = await Custommarker();
@@ -75,10 +109,7 @@ class _googleMapLocationState extends State<googleMapLocation>
                 tilt: 0,
                 zoom: 18.00)));
         updateMarkerAndSurround(newLocaldata, imageData);
-        timeCounter = Timer.periodic((Duration(seconds: 10)), (timer) {
-          VisitedLocations.add(newLocaldata);
-          print('$newLocaldata');
-        });
+
       });
     } on PlatformException catch (e) {
       if (e.code == "PERMISSION_DENIED") {
@@ -87,20 +118,21 @@ class _googleMapLocationState extends State<googleMapLocation>
     }
   }
 
-  Future<void> _stopListening() async {
+  Future<void> stoplistening() async{
+    _locationSubcriber?.cancel();
     setState(() {
-      timeCounter!.cancel();
-      _locationSubcriber?.cancel();
       _locationSubcriber = null;
     });
   }
 
-  @override
-  void dispose() {
-    _locationSubcriber?.cancel();
-
-    super.dispose();
-  }
+ @override
+ void dispose(){
+   _locationSubcriber?.cancel();
+   setState(() {
+     _locationSubcriber = null;
+   });
+   super.dispose();
+ }
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +155,7 @@ class _googleMapLocationState extends State<googleMapLocation>
                         right: 70,
                         top: 650,
                         child: ElevatedButton(
-                          onPressed: () => _getCurrentUserLocation(),
+                          onPressed: () => _listenLocation(),
                           child: const Text("Start Tracking"),
                         )),
                     Positioned(
@@ -131,7 +163,7 @@ class _googleMapLocationState extends State<googleMapLocation>
                         top: 650,
                         child: ElevatedButton(
                           child: const Text("Stop Tracking"),
-                          onPressed: () => _stopListening(),
+                          onPressed: () => stoplistening(),
                         ))
               ],
         )
