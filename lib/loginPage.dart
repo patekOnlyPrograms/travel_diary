@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'screens/MainScreen.dart';
 import 'package:travel_diary/registerPage.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 //rewriting to allow verfication
 //uses keys to keep track of the state and verification
@@ -118,22 +117,22 @@ class _LoginPageState extends State<LoginPage> {
   }
   //login function to ask firebase to login
 
-  void signIn(String email, String password) async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        await _auth
-            .signInWithEmailAndPassword(email: email, password: password)
-            .then((uid) => {
-                  Fluttertoast.showToast(
-                    msg: "Login Successful ",
-                    toastLength: Toast.LENGTH_LONG,
-                  ),
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => homeScreenNavigation())),
-                });
-      } on FirebaseAuthException catch (error) {
-        Fluttertoast.showToast(msg: error.toString());
-      }
-    }
-  }
+  // void signIn(String email, String password) async {
+  //   if (_formKey.currentState!.validate()) {
+  //     try {
+  //       await _auth
+  //           .signInWithEmailAndPassword(email: email, password: password)
+  //           .then((uid) => {
+  //                 Fluttertoast.showToast(
+  //                   msg: "Login Successful ",
+  //                   toastLength: Toast.LENGTH_LONG,
+  //                 ),
+  //                 Navigator.of(context).pushReplacement(
+  //                     MaterialPageRoute(builder: (context) => homeScreenNavigation())),
+  //               });
+  //     } on FirebaseAuthException catch (error) {
+  //       Fluttertoast.showToast(msg: error.toString());
+  //     }
+  //   }
+  // }
 }
