@@ -1,11 +1,12 @@
 // ignore: file_names
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 
 class googleMapLocation extends StatefulWidget {
   const googleMapLocation({Key? key}) : super(key: key);
@@ -22,9 +23,6 @@ class _googleMapLocationState extends State<googleMapLocation>
   late Marker marker;
   late Circle blueSurround;
   String? error;
-  List<LocationData> VisitedLocations = [];
-
-  Timer? timeCounter;
 
   @override
   void initState() {
@@ -56,7 +54,7 @@ class _googleMapLocationState extends State<googleMapLocation>
       marker = Marker(
           markerId: const MarkerId("Walking Icon"),
           position: latlong,
-          rotation: newLocationData.headingAccuracy!,
+          rotation: newLocationData.heading! ,
           zIndex: 2,
           anchor: const Offset(0.5, 0.5),
           icon: BitmapDescriptor.fromBytes(imageMarker));
@@ -91,31 +89,10 @@ class _googleMapLocationState extends State<googleMapLocation>
             error = null;
 
             location = currentLocation;
+            writeLocation(currentLocation);
           });
         });
     setState(() {});
-  }
-
-  Future<void> _getCurrentUserLocation() async {
-    try {
-      Uint8List imageData = await Custommarker();
-      _locationSubcriber =
-          locationStuff.onLocationChanged.listen((newLocaldata) {
-        mapController.animateCamera(CameraUpdate.newCameraPosition(
-            CameraPosition(
-                bearing: 192.8334901395799,
-                target:
-                    LatLng((newLocaldata.latitude)!, (newLocaldata.longitude)!),
-                tilt: 0,
-                zoom: 18.00)));
-        updateMarkerAndSurround(newLocaldata, imageData);
-
-      });
-    } on PlatformException catch (e) {
-      if (e.code == "PERMISSION_DENIED") {
-        debugPrintStack();
-      }
-    }
   }
 
   Future<void> stoplistening() async{
@@ -133,6 +110,25 @@ class _googleMapLocationState extends State<googleMapLocation>
    });
    super.dispose();
  }
+
+ //getting application document directory as a string to find where it is.
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+    print(directory.path);
+    return directory.path;
+  }
+
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    return File('$path/counter.txt');
+  }
+
+  Future<File> writeLocation(LocationData location) async {
+    final file = await _localFile;
+
+    // Write the file
+    return file.writeAsString('$location');
+  }
 
   @override
   Widget build(BuildContext context) {
