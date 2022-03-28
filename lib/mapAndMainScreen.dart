@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:csv/csv.dart';
+
 
 class googleMapLocation extends StatefulWidget {
   const googleMapLocation({Key? key}) : super(key: key);
@@ -23,6 +25,8 @@ class _googleMapLocationState extends State<googleMapLocation>
   late Marker marker;
   late Circle blueSurround;
   String? error;
+
+  //List<dynamic> VisitedLocations = [];
 
   @override
   void initState() {
@@ -89,7 +93,11 @@ class _googleMapLocationState extends State<googleMapLocation>
             error = null;
 
             location = currentLocation;
-            writeLocation(currentLocation);
+            //add current location to list
+            //VisitedLocations.add(currentLocation);
+            //convert List<Dynamic> to List<String>
+            //List<String> visitedLocationsStrings = VisitedLocations.map((e) => e.toString()).toList();
+            //print(visitedLocationsStrings);
           });
         });
     setState(() {});
@@ -111,24 +119,12 @@ class _googleMapLocationState extends State<googleMapLocation>
    super.dispose();
  }
 
- //getting application document directory as a string to find where it is.
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-    print(directory.path);
-    return directory.path;
-  }
+  //add items from the list to a CSV file
+  //String listToCSV = ListToCsvConverter().convert(VisitedLocations);
 
-  Future<File> get _localFile async {
-    final path = await _localPath;
-    return File('$path/counter.txt');
-  }
+  //getting application document directory as a string to find where it is.
+  //External storage so i can verify that is works
 
-  Future<File> writeLocation(LocationData location) async {
-    final file = await _localFile;
-
-    // Write the file
-    return file.writeAsString('$location');
-  }
 
   @override
   Widget build(BuildContext context) {
