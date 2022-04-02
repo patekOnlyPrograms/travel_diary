@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel_diary/mapAndMainScreen.dart';
 
 class dynamicList extends StatefulWidget {
   const dynamicList({Key? key}) : super(key: key);
@@ -13,6 +14,8 @@ class dynamicList extends StatefulWidget {
 
 class _dynamicListState extends State<dynamicList>
     with AutomaticKeepAliveClientMixin{
+
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
