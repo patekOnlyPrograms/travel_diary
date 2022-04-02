@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'loginPage.dart';
 
-void  main(){
+void main() {
   runApp(MyApp());
 }
 
@@ -14,11 +14,7 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Travel Diary'),
         ),
-        body: Column(
-          children: [
-            LoginPage(),
-        ],
-        ),
+        body: LoginPage(),
       ),
     );
   }
