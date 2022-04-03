@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:travel_diary/screens/Settings.dart';
 import '../mapAndMainScreen.dart';
-import '../widgets/dynamicList.dart';
 
 class homeScreenNavigation extends StatefulWidget {
   const homeScreenNavigation({Key? key}) : super(key: key);
@@ -19,10 +18,6 @@ class _homeScreenNavigationState extends State<homeScreenNavigation> {
       const BottomNavigationBarItem(
           label: "Map",
           icon: Icon(Icons.location_pin)
-      ),
-      const BottomNavigationBarItem(
-          label: "List",
-          icon: Icon(Icons.list_sharp)
       ),
       const BottomNavigationBarItem(
           label: "Settings",
@@ -44,7 +39,6 @@ class _homeScreenNavigationState extends State<homeScreenNavigation> {
       },
       children: <Widget>[
         googleMapLocation(),
-        dynamicList(),
         SettingsPage()
       ],
     );
