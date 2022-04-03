@@ -6,9 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:flutter/services.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:csv/csv.dart';
-
+import 'package:path_provider/path_provider.dart';
 
 class googleMapLocation extends StatefulWidget {
   const googleMapLocation({Key? key}) : super(key: key);
@@ -25,8 +23,13 @@ class _googleMapLocationState extends State<googleMapLocation>
   late Marker marker;
   late Circle blueSurround;
   String? error;
+  late String locationDatatoString;
+  Timer? timer;
 
-  //List<dynamic> VisitedLocations = [];
+  LocationData? locationOfUser;
+
+
+  List<LocationData> VisitedLocations = [];
 
   @override
   void initState() {
@@ -40,7 +43,8 @@ class _googleMapLocationState extends State<googleMapLocation>
     super.initState();
   }
 
-  static const CameraPosition CurrentLatLong = CameraPosition(target: LatLng(0.000000, 0.000000), zoom: 15);
+  static const CameraPosition CurrentLatLong =
+      CameraPosition(target: LatLng(0.000000, 0.000000), zoom: 15);
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -53,12 +57,13 @@ class _googleMapLocationState extends State<googleMapLocation>
   }
 
   void updateMarkerAndSurround(LocationData newLocationData, Uint8List imageMarker) {
-    LatLng latlong = LatLng((newLocationData.latitude)!, (newLocationData.longitude!));
+    LatLng latlong =
+        LatLng((newLocationData.latitude)!, (newLocationData.longitude!));
     setState(() {
       marker = Marker(
           markerId: const MarkerId("Walking Icon"),
           position: latlong,
-          rotation: newLocationData.heading! ,
+          rotation: newLocationData.heading!,
           zIndex: 2,
           anchor: const Offset(0.5, 0.5),
           icon: BitmapDescriptor.fromBytes(imageMarker));
@@ -69,97 +74,136 @@ class _googleMapLocationState extends State<googleMapLocation>
     Uint8List imageData = await Custommarker();
     _locationSubcriber =
         locationStuff.onLocationChanged.handleError((dynamic err) {
-          if (err is PlatformException) {
-            setState(() {
-              error = err.code;
-            });
-          }
-          _locationSubcriber?.cancel();
-          setState(() {
-            _locationSubcriber = null;
-          });
-        }).listen((LocationData currentLocation) {
-          setState(() {
-            mapController.animateCamera(CameraUpdate.newCameraPosition(
-              CameraPosition(
-                  bearing: 192.8334901395799,
-                  target:
-                  LatLng((currentLocation.latitude)!, (currentLocation.longitude)!),
-                  tilt: 0,
-                  zoom: 18.00
-              )
-            ));
-            updateMarkerAndSurround(currentLocation, imageData);
-            error = null;
-
-            location = currentLocation;
-            //add current location to list
-            //VisitedLocations.add(currentLocation);
-            //convert List<Dynamic> to List<String>
-            //List<String> visitedLocationsStrings = VisitedLocations.map((e) => e.toString()).toList();
-            //print(visitedLocationsStrings);
-          });
+      if (err is PlatformException) {
+        setState(() {
+          error = err.code;
         });
+      }
+      _locationSubcriber?.cancel();
+      setState(() {
+        _locationSubcriber = null;
+      });
+    }).listen((LocationData currentLocation) {
+      setState(() {
+        mapController.animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(
+                bearing: 192.8334901395799,
+                target: LatLng(
+                    (currentLocation.latitude)!, (currentLocation.longitude)!),
+                tilt: 0,
+                zoom: 18.00)));
+        updateMarkerAndSurround(currentLocation, imageData);
+        error = null;
+
+        location = currentLocation;
+        locationDatatoString = currentLocation.toString();
+      });
+    });
     setState(() {});
+    listAdder();
   }
 
-  Future<void> stoplistening() async{
+  Future<void> stoplistening() async {
     _locationSubcriber?.cancel();
     setState(() {
       _locationSubcriber = null;
     });
+    stopTimer();
   }
 
- @override
- void dispose(){
-   _locationSubcriber?.cancel();
-   setState(() {
-     _locationSubcriber = null;
-   });
-   super.dispose();
- }
+  @override
+  void dispose() {
+    _locationSubcriber?.cancel();
+    setState(() {
+      _locationSubcriber = null;
+    });
+    super.dispose();
+  }
 
-  //add items from the list to a CSV file
-  //String listToCSV = ListToCsvConverter().convert(VisitedLocations);
 
-  //getting application document directory as a string to find where it is.
-  //External storage so i can verify that is works
+  Future<void> getLocation() async{
+    try{
+      final LocationData locationResult = await locationStuff.getLocation();
+      setState(() {
+        locationOfUser = locationResult;
+      });
+    }on PlatformException catch(err){
+      setState(() {
+        error = err.code;
+        print(error);
+      });
+    }
+  }
+
+  void listAdder(){
+    timer = Timer.periodic(Duration(seconds: 5), (timer) {
+      getLocation();
+      VisitedLocations.add(locationOfUser!);
+    });
+  }
+
+  void stopTimer(){
+    timer?.cancel();
+  }
 
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-            body: Stack(
-              children: <Widget>[
-                    GoogleMap(
-                      mapType: MapType.hybrid,
-                      onMapCreated: _onMapCreated,
-                      zoomControlsEnabled: true,
-                      zoomGesturesEnabled: true,
-                      rotateGesturesEnabled: true,
-                      initialCameraPosition: CurrentLatLong,
-                      markers: Set.of((marker != null) ? [marker] : []),
-                    ),
-                    Positioned(
-                        right: 70,
-                        top: 650,
-                        child: ElevatedButton(
-                          onPressed: () => _listenLocation(),
-                          child: const Text("Start Tracking"),
-                        )),
-                    Positioned(
-                        right: 200,
-                        top: 650,
-                        child: ElevatedButton(
-                          child: const Text("Stop Tracking"),
-                          onPressed: () => stoplistening(),
-                        ))
-              ],
-        )
-      )
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: ListView(
+          children: [
+            SafeArea(
+                child: Container(
+                  margin: EdgeInsets.all(15),
+                  padding: EdgeInsets.all(15),
+                  width: 450,
+                  height: 450,
+                  child: GoogleMap(
+                    mapType: MapType.hybrid,
+                    onMapCreated: _onMapCreated,
+                    zoomControlsEnabled: true,
+                    zoomGesturesEnabled: true,
+                    rotateGesturesEnabled: true,
+                    initialCameraPosition: CurrentLatLong,
+                    markers: Set.of((marker != null) ? [marker] : []),
+                  ),
+              )
+            ),
+            Container(
+              child: ListView.builder(
+                  physics: ScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: VisitedLocations.length,
+                  itemBuilder: (context, index){
+                    return Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text('${VisitedLocations.elementAt(index)}'),
+                      ),
+                    );
+                  }
+              ),
+            )
+          ],
+        ),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+                heroTag: "Floating action button 1",
+                child: Icon(Icons.play_arrow),
+                onPressed: () => _listenLocation()),
+            FloatingActionButton(
+                heroTag: "Floating action button 2",
+                child: Icon(Icons.stop), onPressed: () => stoplistening())
+          ],
+        ),
+      ),
     );
   }
 
