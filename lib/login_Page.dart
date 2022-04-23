@@ -3,7 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'screens/MainScreen.dart';
+import 'screens/bottom_drawer.dart';
 import 'package:travel_diary/registerPage.dart';
 
 //rewriting to allow verfication
@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => homeScreenNavigation()));
+                              builder: (context) => HomeScreenNavigation()));
                     }
                   },
                   child: const Text('Login')),
@@ -102,8 +102,11 @@ class _LoginPageState extends State<LoginPage> {
                   label: const Text("Sign In With Google")),
               ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const homeScreenNavigation()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const HomeScreenNavigation()));
                   },
                   child: const Text("Continue without signing in"))
             ],

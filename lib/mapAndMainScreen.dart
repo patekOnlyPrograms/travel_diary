@@ -28,7 +28,6 @@ class _googleMapLocationState extends State<googleMapLocation>
 
   LocationData? locationOfUser;
 
-
   List<LocationData> VisitedLocations = [];
 
   @override
@@ -56,7 +55,8 @@ class _googleMapLocationState extends State<googleMapLocation>
     return imageMarker.buffer.asUint8List();
   }
 
-  void updateMarkerAndSurround(LocationData newLocationData, Uint8List imageMarker) {
+  void updateMarkerAndSurround(
+      LocationData newLocationData, Uint8List imageMarker) {
     LatLng latlong =
         LatLng((newLocationData.latitude)!, (newLocationData.longitude!));
     setState(() {
@@ -120,14 +120,13 @@ class _googleMapLocationState extends State<googleMapLocation>
     super.dispose();
   }
 
-
-  Future<void> getLocation() async{
-    try{
+  Future<void> getLocation() async {
+    try {
       final LocationData locationResult = await locationStuff.getLocation();
       setState(() {
         locationOfUser = locationResult;
       });
-    }on PlatformException catch(err){
+    } on PlatformException catch (err) {
       setState(() {
         error = err.code;
         print(error);
@@ -135,17 +134,17 @@ class _googleMapLocationState extends State<googleMapLocation>
     }
   }
 
-  void listAdder(){
+  void listAdder() {
     timer = Timer.periodic(Duration(seconds: 5), (timer) {
       getLocation();
+
       VisitedLocations.add(locationOfUser!);
     });
   }
 
-  void stopTimer(){
+  void stopTimer() {
     timer?.cancel();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -157,36 +156,34 @@ class _googleMapLocationState extends State<googleMapLocation>
           children: [
             SafeArea(
                 child: Container(
-                  margin: EdgeInsets.all(15),
-                  padding: EdgeInsets.all(15),
-                  width: 450,
-                  height: 450,
-                  child: GoogleMap(
-                    mapType: MapType.hybrid,
-                    onMapCreated: _onMapCreated,
-                    zoomControlsEnabled: true,
-                    zoomGesturesEnabled: true,
-                    rotateGesturesEnabled: true,
-                    initialCameraPosition: CurrentLatLong,
-                    markers: Set.of((marker != null) ? [marker] : []),
-                  ),
-              )
-            ),
+              margin: EdgeInsets.all(15),
+              padding: EdgeInsets.all(15),
+              width: 450,
+              height: 450,
+              child: GoogleMap(
+                mapType: MapType.hybrid,
+                onMapCreated: _onMapCreated,
+                zoomControlsEnabled: true,
+                zoomGesturesEnabled: true,
+                rotateGesturesEnabled: true,
+                initialCameraPosition: CurrentLatLong,
+                markers: Set.of((marker != null) ? [marker] : []),
+              ),
+            )),
             Container(
               child: ListView.builder(
                   physics: ScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   itemCount: VisitedLocations.length,
-                  itemBuilder: (context, index){
+                  itemBuilder: (context, index) {
                     return Card(
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: Text('${VisitedLocations.elementAt(index)}'),
                       ),
                     );
-                  }
-              ),
+                  }),
             )
           ],
         ),
@@ -200,7 +197,8 @@ class _googleMapLocationState extends State<googleMapLocation>
                 onPressed: () => _listenLocation()),
             FloatingActionButton(
                 heroTag: "Floating action button 2",
-                child: Icon(Icons.stop), onPressed: () => stoplistening())
+                child: Icon(Icons.stop),
+                onPressed: () => stoplistening())
           ],
         ),
       ),

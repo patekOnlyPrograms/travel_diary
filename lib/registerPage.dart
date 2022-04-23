@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'screens/MainScreen.dart';
+import 'screens/bottom_drawer.dart';
 
 class registerPage extends StatelessWidget {
   const registerPage({Key? key}) : super(key: key);
@@ -19,7 +19,6 @@ class registerPage extends StatelessWidget {
 }
 
 class registerPageForm extends StatefulWidget {
-
   @override
   _registerPageForm createState() => _registerPageForm();
 }
@@ -34,44 +33,41 @@ class _registerPageForm extends State<registerPageForm> {
         child: Column(
           children: <Widget>[
             Padding(
-                padding: EdgeInsets.all(10),
-                child: TextFormField(
-                  decoration: const InputDecoration(
+              padding: EdgeInsets.all(10),
+              child: TextFormField(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: 'Please enter a Username'
-                  ),
-                  validator: (value){
-                    if(value == null || value.isEmpty){
-                      return 'Please enter a Username';
-                    }
-                    return null;
-                  },
-                ),
-            ),
-            Padding(
-                padding: EdgeInsets.all(10),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Please enter your First Name'
-                  ),
-                  validator: (value){
-                    if(value == null|| value.isEmpty){
-                      return 'Please enter your First Name';
-                    }
-                    return null;
-                  },
-                ),
+                    hintText: 'Please enter a Username'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a Username';
+                  }
+                  return null;
+                },
+              ),
             ),
             Padding(
               padding: EdgeInsets.all(10),
               child: TextFormField(
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: 'Please enter your Last Name'
-                ),
-                validator: (value){
-                  if(value == null|| value.isEmpty){
+                    hintText: 'Please enter your First Name'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your First Name';
+                  }
+                  return null;
+                },
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: TextFormField(
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Please enter your Last Name'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
                     return 'Please enter your Last Name';
                   }
                   return null;
@@ -83,14 +79,15 @@ class _registerPageForm extends State<registerPageForm> {
               child: TextFormField(
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: 'Please enter your Email'
-                ),
-                validator: (value){
-                  if(value == null|| value.isEmpty){
+                    hintText: 'Please enter your Email'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
                     return 'Please enter your Email';
                   }
                   //rewrite the regex
-                  if(!RegExp("^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})").hasMatch(value)){
+                  if (!RegExp(
+                          "^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})")
+                      .hasMatch(value)) {
                     return 'Please enter a valid email';
                   }
                   return null;
@@ -102,10 +99,9 @@ class _registerPageForm extends State<registerPageForm> {
               child: TextFormField(
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: 'Please enter your Password'
-                ),
-                validator: (value){
-                  if(value == null|| value.isEmpty){
+                    hintText: 'Please enter your Password'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
                     return 'Please enter your Password';
                   }
                   return null;
@@ -113,22 +109,21 @@ class _registerPageForm extends State<registerPageForm> {
               ),
             ),
             Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: ElevatedButton(
-                  onPressed: (){
-                    if(_registerFormKey.currentState!.validate() &&
-                        _registerFormKey.currentState!.validate()){
-                      Navigator.push(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_registerFormKey.currentState!.validate() &&
+                      _registerFormKey.currentState!.validate()) {
+                    Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => homeScreenNavigation())
-                      );
-                    }
-                  },
-                  child: const Text('Register'),
-                ),
+                        MaterialPageRoute(
+                            builder: (context) => HomeScreenNavigation()));
+                  }
+                },
+                child: const Text('Register'),
+              ),
             )
           ],
-        )
-    );
+        ));
   }
 }
