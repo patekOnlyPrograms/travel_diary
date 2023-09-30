@@ -35,7 +35,7 @@ class _homeScreenNavigationState extends State<HomeScreenNavigation> {
       },
       children: const <Widget>[
         googleMapLocation(),
-        HistoryOfLocations(),
+        //HistoryOfLocations(),
         SettingsPage()
       ],
     );
